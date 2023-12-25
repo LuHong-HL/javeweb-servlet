@@ -1,4 +1,4 @@
-package com.java.servlet;
+package com.java.service;
 
 import com.java.mapper.UserMapper;
 import com.java.pojo.User;

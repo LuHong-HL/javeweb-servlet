@@ -1,4 +1,4 @@
-package com.java.servlet;
+package com.java.service;
 
 public class HelloWorld {
     public static void main(String[] args) {
