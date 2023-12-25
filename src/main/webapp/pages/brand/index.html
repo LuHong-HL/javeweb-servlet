@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>brand</title>
+</head>
+<body>
+    <div id="app">
+        <h1>brand</h1>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>序号</th>
+                <th>名字</th>
+                <th>描述</th>
+                <th>状态</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+    <script src="../../js/axios.min.js"></script>
+    <script>
+        console.log('=====', axios)
+        axios({
+            method: 'get',
+            url: 'http://localhost:8080/servlet/SelectAllServlet'
+            }).then(function (res) {
+                console.log(res)
+                var tableBodyHtmlStr = ''
+                var brands = res.data
+                for(var i = 0; i < brands.length; i++) {
+                    tableBodyHtmlStr += "<tr>\n" +
+                        "            <td>" + (i + 1) + "</td>\n" +
+                        "            <td>" + brands[i].brandName + "</td>\n" +
+                        "            <td>" + brands[i].description + "</td>\n" +
+                        "            <td>" + brands[i].status + "</td>\n" +
+                        "        </tr>"
+                }
+                console.log(tableBodyHtmlStr)
+                document.getElementById("tableBody").innerHTML = tableBodyHtmlStr
+            })
+    </script>
+</body>
+</html>

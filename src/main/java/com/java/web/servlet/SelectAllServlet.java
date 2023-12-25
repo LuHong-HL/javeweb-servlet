@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.java.pojo.Brand;
 import com.java.service.BrandService;
 import com.java.service.impl.BrandServiceImpl;
-import com.mysql.cj.xdevapi.JsonString;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
