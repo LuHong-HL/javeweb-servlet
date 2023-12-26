@@ -5,63 +5,69 @@
     <title>Title</title>
 </head>
 <body>
-    <div id="app">
-        <table>
-            <thead>
-            <tr>
-                <th>序号</th>
-                <th>名字</th>
-                <th>描述</th>
-                <th>状态</th>
-            </tr>
-            </thead>
-            <tbody id="tableBody">
-                <tr v-for="(item, index) in brandList">
-                    <td>{{ index + 1 }}</td>
-                    <td>{{ item.brandName }}</td>
-                    <td>{{ item.description }}</td>
-                    <td>{{ item.status }}</td>
-                </tr>
-            </tbody>
-        </table>
-        <el-row>
-            <el-button>默认按钮</el-button>
-            <el-button type="primary">主要按钮</el-button>
-            <el-button type="success">成功按钮</el-button>
-            <el-button type="info">信息按钮</el-button>
-            <el-button type="warning">警告按钮</el-button>
-            <el-button type="danger">危险按钮</el-button>
-        </el-row>
+<div id="app">
+    <div class="head">
+    head
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <script src="../../js/axios.min.js"></script>
-    <!-- 引入样式 -->
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-    <!-- 引入组件库 -->
-    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-    <script>
-        var app = new Vue({
-            el: '#app',
-            data () {
-                return {
-                    brandList: []
-                }
-            },
-            mounted() {
-                this.getBrandList()
-            },
-            methods: {
-                getBrandList() {
-                    axios({
-                        method: 'get',
-                        url: 'http://localhost:8080/servlet/SelectAllServlet'
-                    }).then(res => {
-                        const { data } = res
-                        this.brandList = data
-                    })
-                }
+    <div class="main">
+        <el-table
+                :data="brandList"
+                stripe
+                style="width: 100%">
+            <el-table-column
+                    type="index"
+                    width="50">
+            </el-table-column>
+            <el-table-column
+                    prop="brandName"
+                    label="品牌名称"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="description"
+                    label="描述"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="status"
+                    label="状态">
+                <template slot-scope="scope">
+                    {{ scope.row.status === 1 ? '启用' : '禁用'}}
+                </template>
+            </el-table-column>
+        </el-table>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script src="../../js/axios.min.js"></script>
+<!-- 引入样式 -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data() {
+            return {
+                brandList: []
             }
-        })
-    </script>
+        },
+        mounted() {
+            this.getBrandList()
+        },
+        methods: {
+            getBrandList() {
+                axios({
+                    method: 'get',
+                    url: 'http://localhost:8080/servlet/selectAllServlet'
+                }).then(res => {
+                    const {data} = res
+                    this.brandList = data
+                })
+            }
+        }
+    })
+</script>
 </body>
 </html>

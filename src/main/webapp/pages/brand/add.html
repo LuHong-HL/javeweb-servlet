@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="app">
+        <el-button @click="addBrand">提交品牌信息</el-button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="../../js/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    brandList: []
+                }
+            },
+            mounted() {
+            },
+            methods: {
+                addBrand() {
+                    const params = {
+                        brandName: '小米' + Math.floor(Math.random() * 1000),
+                        description: '描述111'
+                    }
+                    axios({
+                        method: 'post',
+                        url: 'http://localhost:8080/servlet/addServlet',
+                        data: params
+                    }).then(res => {
+                        console.log('res', res)
+                        if (res.data === 'success') {
+                            this.$message({
+                                message: '添加成功',
+                                type: 'success'
+                            });
+                        }
+                    })
+                }
+            }
+        })
+    </script>
+</body>
+</html>

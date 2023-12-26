@@ -47,4 +47,15 @@ public class Brand {
         this.status = status;
     }
 
+    @Override
+    public String toString() {
+        return "Brand{" +
+                "id=" + id +
+                ", brandName='" + brandName + '\'' +
+                ", ordered=" + ordered +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                '}';
+    }
+
 }

@@ -54,7 +54,7 @@
                 getBrandList() {
                     axios({
                         method: 'get',
-                        url: 'http://localhost:8080/servlet/SelectAllServlet'
+                        url: 'http://localhost:8080/servlet/selectAllServlet'
                     }).then(res => {
                         const { data } = res
                         this.brandList = data
