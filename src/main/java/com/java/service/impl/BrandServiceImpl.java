@@ -55,4 +55,31 @@ public class BrandServiceImpl implements BrandService {
 
         return pageBean;
     }
+
+    @Override
+    public PageBean<Brand> selectByPageAndCondition(int currentPage, int pageSize, Brand brand) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+        int begin = (currentPage - 1) * pageSize;
+        int size = pageSize;
+
+        String brandName = brand.getBrandName();
+        if (brandName != null && brandName.length() > 0) {
+            brand.setBrandName("%" + brandName + "%");
+        }
+        String description = brand.getDescription();
+        if (description != null && description.length() > 0) {
+            brand.setDescription("%" + description + "%");
+        }
+
+        int total = mapper.selectTotalCountByCondition(brand);
+        System.out.println("==" + total);
+        List<Brand> brands = mapper.selectByPageAndCondition(begin, size, brand);
+        PageBean<Brand> pageBean = new PageBean<>();
+        pageBean.setList(brands);
+        pageBean.setTotal(total);
+        sqlSession.close();
+
+        return pageBean;
+    }
 }

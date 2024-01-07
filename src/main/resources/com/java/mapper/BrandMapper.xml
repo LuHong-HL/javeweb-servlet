@@ -15,4 +15,35 @@
             #{id}
         </foreach>
     </delete>
+
+    <select id="selectByPageAndCondition" resultMap="brandResultMap">
+        select * from brand
+        <where>
+            <if test="brand.brandName != null and brand.brandName != ''">
+                and brand_name like #{brand.brandName}
+            </if>
+            <if test="brand.description != null and brand.description != ''">
+                and description like #{brand.description}
+            </if>
+            <if test="brand.status != null and brand.status != ''">
+                and status = #{brand.status}
+            </if>
+        </where>
+        limit #{begin}, #{size}
+    </select>
+
+    <select id="selectTotalCountByCondition" resultType="java.lang.Integer">
+        select count(*) from brand
+        <where>
+            <if test="brandName != null and brandName != ''">
+                and brand_name like #{brandName}
+            </if>
+            <if test="description != null and description != ''">
+                and description like #{description}
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
 </mapper>

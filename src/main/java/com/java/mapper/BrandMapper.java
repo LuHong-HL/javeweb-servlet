@@ -47,4 +47,20 @@ public interface BrandMapper {
     @Select("select * from brand limit #{begin}, #{size}")
     @ResultMap("brandResultMap")
     List<Brand> selectByPage(@Param("begin") int begin, @Param("size") int size);
+
+
+    /**
+     * 分页条件查询
+     * @param begin
+     * @param size
+     * @param brand
+     * @return
+     */
+    List<Brand> selectByPageAndCondition(@Param("begin") int begin, @Param("size") int size, @Param("brand") Brand brand);
+
+    /**
+     * 获取条件查询获取总数
+     * @return
+     */
+    int selectTotalCountByCondition(Brand brand);
 }

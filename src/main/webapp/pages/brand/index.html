@@ -10,6 +10,29 @@
     head
     </div>
     <div class="main">
+        <el-form ref="form" :model="form" label-width="80px" :inline="true">
+            <el-form-item label="品牌名称">
+                <el-input v-model="formParams.brandName"></el-input>
+            </el-form-item>
+            <el-form-item label="描述">
+                <el-input v-model="formParams.description"></el-input>
+            </el-form-item>
+            <el-form-item label="状态">
+                <el-select v-model="formParams.status" placeholder="请选择">
+                    <el-option
+                        label="启动"
+                        :value="1">
+                    </el-option>
+                    <el-option
+                            label="禁用"
+                            :value="0">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="search">搜索</el-button>
+            </el-form-item>
+        </el-form>
         <div>
             <el-button @click="deleteByIds" type="danger">批量删除</el-button>
         </div>
@@ -70,7 +93,10 @@
             return {
                 formParams: {
                     pageSize: 10,
-                    currentPage: 1
+                    currentPage: 1,
+                    brandName: '',
+                    status: '',
+                    description: ''
                 },
                 total: 0, // 总条数
                 brandList: [],
@@ -91,13 +117,18 @@
                 // })
 
                 const params = {
-                    ...this.formParams
+                    brandName: this.formParams.brandName,
+                    description: this.formParams.description,
+                    status: this.formParams.status
                 }
-
                 axios({
-                    method: 'get',
-                    url: 'http://localhost:8080/servlet/brand/selectByPage',
-                    params
+                    method: 'post',
+                    url: 'http://localhost:8080/servlet/brand/selectByPageAndCondition',
+                    data: params,
+                    params: {
+                        currentPage: this.formParams.currentPage,
+                        pageSize: this.formParams.pageSize
+                    }
                 }).then(res => {
                     const {data = {} } = res
                     const { list, total } = data
@@ -140,6 +171,28 @@
             handleCurrentChange(currentPage) {
                 this.formParams.currentPage = currentPage
                 this.getBrandList()
+            },
+            // 条件查询
+            search() {
+                const params = {
+                    brandName: this.formParams.brandName,
+                    description: this.formParams.description,
+                    status: this.formParams.status
+                }
+                axios({
+                    method: 'post',
+                    url: 'http://localhost:8080/servlet/brand/selectByPageAndCondition',
+                    data: params,
+                    params: {
+                        currentPage: this.formParams.currentPage,
+                        pageSize: this.formParams.pageSize
+                    }
+                }).then(res => {
+                    const {data = {} } = res
+                    const { list, total } = data
+                    this.brandList = list
+                    this.total = total
+                })
             }
         }
     })

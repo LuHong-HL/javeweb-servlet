@@ -34,4 +34,13 @@ public interface BrandService {
      * @return
      */
     PageBean<Brand> selectByPage(int currentPage, int pageSize);
+
+    /**
+     * 分页条件查询
+     * @param currentPage 当前页码
+     * @param pageSize 页面展示条数
+     * @param brand 品牌实体
+     * @return
+     */
+    PageBean<Brand> selectByPageAndCondition(int currentPage, int pageSize, Brand brand);
 }

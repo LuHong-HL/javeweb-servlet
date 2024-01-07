@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
 
 @WebServlet("/brand/*")
@@ -74,6 +75,33 @@ public class BrandServlet extends BaseServlet {
         // 调用 service查询
         PageBean<Brand> pageBean = brandService.selectByPage(currentPage, pageSize);
         ObjectMapper objectMapper = new ObjectMapper();
+        response.setContentType("application/json;charset=utf-8");
+        response.getWriter().write(objectMapper.writeValueAsString(pageBean));
+    }
+
+    /**
+     * 分页条件查询
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void selectByPageAndCondition(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String _currentPage = request.getParameter("currentPage");
+        String _pageSize = request.getParameter("pageSize");
+        int currentPage = Integer.parseInt(_currentPage);
+        int pageSize = Integer.parseInt(_pageSize);
+
+        request.setCharacterEncoding("utf-8");
+        BufferedReader reader = request.getReader();
+        String str = reader.readLine();
+        System.out.println(str);
+        ObjectMapper objectMapper = new ObjectMapper();
+        Brand brand = objectMapper.readValue(str, Brand.class);
+        System.out.println(brand);
+
+        // 调用 service查询
+        PageBean<Brand> pageBean = brandService.selectByPageAndCondition(currentPage, pageSize, brand);
         response.setContentType("application/json;charset=utf-8");
         response.getWriter().write(objectMapper.writeValueAsString(pageBean));
     }
