@@ -2,6 +2,7 @@ package com.java.web.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.java.pojo.Brand;
+import com.java.pojo.PageBean;
 import com.java.service.BrandService;
 import com.java.service.impl.BrandServiceImpl;
 
@@ -55,5 +56,25 @@ public class BrandServlet extends BaseServlet {
         int [] ids = objectMapper.readValue(str, int[].class);
         brandService.deleteByIds(ids);
         response.getWriter().write("success");
+    }
+
+    /**
+     * 分页查询
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void selectByPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String _currentPage = request.getParameter("currentPage");
+        String _pageSize = request.getParameter("pageSize");
+        int currentPage = Integer.parseInt(_currentPage);
+        int pageSize = Integer.parseInt(_pageSize);
+
+        // 调用 service查询
+        PageBean<Brand> pageBean = brandService.selectByPage(currentPage, pageSize);
+        ObjectMapper objectMapper = new ObjectMapper();
+        response.setContentType("application/json;charset=utf-8");
+        response.getWriter().write(objectMapper.writeValueAsString(pageBean));
     }
 }

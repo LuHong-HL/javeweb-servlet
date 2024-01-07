@@ -15,8 +15,6 @@ public class BaseServlet extends HttpServlet {
         System.out.println(requestURI);
         int index = requestURI.lastIndexOf("/");
         String methodName = requestURI.substring(index + 1);
-        System.out.println(methodName);
-        System.out.println(this);
 
         Class<? extends BaseServlet> cls = this.getClass();
         try {

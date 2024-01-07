@@ -2,6 +2,7 @@ package com.java.service.impl;
 
 import com.java.mapper.BrandMapper;
 import com.java.pojo.Brand;
+import com.java.pojo.PageBean;
 import com.java.service.BrandService;
 import com.java.utils.SqlSessionFactoryUtils;
 import org.apache.ibatis.session.SqlSession;
@@ -37,5 +38,21 @@ public class BrandServiceImpl implements BrandService {
         mapper.deleteByIds(ids);
         sqlSession.commit();
         sqlSession.close();
+    }
+
+    @Override
+    public PageBean<Brand> selectByPage(int currentPage, int pageSize) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+        int begin = (currentPage - 1) * pageSize;
+        int size = pageSize;
+        int total = mapper.selectTotalCount();
+        List<Brand> brands = mapper.selectByPage(begin, size);
+        PageBean<Brand> pageBean = new PageBean<>();
+        pageBean.setList(brands);
+        pageBean.setTotal(total);
+        sqlSession.close();
+
+        return pageBean;
     }
 }

@@ -45,6 +45,15 @@
                 </template>
             </el-table-column>
         </el-table>
+        <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="formParams.currentPage"
+            :page-sizes="[10, 20, 50, 100]"
+            :page-size="10"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total">
+        </el-pagination>
     </div>
 </div>
 
@@ -59,6 +68,11 @@
         el: '#app',
         data() {
             return {
+                formParams: {
+                    pageSize: 10,
+                    currentPage: 1
+                },
+                total: 0, // 总条数
                 brandList: [],
                 selection: [] // 选择的品牌
             }
@@ -68,12 +82,27 @@
         },
         methods: {
             getBrandList() {
+                // axios({
+                //     method: 'get',
+                //     url: 'http://localhost:8080/servlet/brand/selectAll'
+                // }).then(res => {
+                //     const {data} = res
+                //     this.brandList = data
+                // })
+
+                const params = {
+                    ...this.formParams
+                }
+
                 axios({
                     method: 'get',
-                    url: 'http://localhost:8080/servlet/brand/selectAll'
+                    url: 'http://localhost:8080/servlet/brand/selectByPage',
+                    params
                 }).then(res => {
-                    const {data} = res
-                    this.brandList = data
+                    const {data = {} } = res
+                    const { list, total } = data
+                    this.brandList = list
+                    this.total = total
                 })
             },
             // 通过ids 删除
@@ -103,6 +132,14 @@
             selectAll(selection) {
                 console.log('select-all', selection)
                 this.selection = selection
+            },
+            handleSizeChange(size) {
+                this.formParams.pageSize = size
+                this.getBrandList()
+            },
+            handleCurrentChange(currentPage) {
+                this.formParams.currentPage = currentPage
+                this.getBrandList()
             }
         }
     })

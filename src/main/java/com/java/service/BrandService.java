@@ -1,6 +1,7 @@
 package com.java.service;
 
 import com.java.pojo.Brand;
+import com.java.pojo.PageBean;
 
 import java.util.List;
 
@@ -25,4 +26,12 @@ public interface BrandService {
      * @param ids
      */
     void deleteByIds(int [] ids);
+
+    /**
+     * 分页查询
+     * @param currentPage 当前页码
+     * @param pageSize 页面展示条数
+     * @return
+     */
+    PageBean<Brand> selectByPage(int currentPage, int pageSize);
 }
