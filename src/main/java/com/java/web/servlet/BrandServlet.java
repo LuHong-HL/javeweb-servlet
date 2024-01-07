@@ -45,4 +45,15 @@ public class BrandServlet extends BaseServlet {
 
         response.getWriter().write("success");
     }
+
+    public void deleteByIds(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
+        BufferedReader reader = request.getReader();
+        String str = reader.readLine();
+        System.out.println(str);
+        ObjectMapper objectMapper = new ObjectMapper();
+        int [] ids = objectMapper.readValue(str, int[].class);
+        brandService.deleteByIds(ids);
+        response.getWriter().write("success");
+    }
 }

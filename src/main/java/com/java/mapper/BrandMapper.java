@@ -2,6 +2,7 @@ package com.java.mapper;
 
 import com.java.pojo.Brand;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 
@@ -23,4 +24,10 @@ public interface BrandMapper {
      */
     @Insert("insert into brand values(null, #{brandName}, #{ordered}, #{description}, #{status})")
     void add(Brand brand);
+
+    /**
+     * 批量删除
+     * @param ids
+     */
+    void deleteByIds(@Param("ids") int[] ids);
 }

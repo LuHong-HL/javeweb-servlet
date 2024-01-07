@@ -19,4 +19,10 @@ public interface BrandService {
      * @param brand
      */
     void add(Brand brand);
+
+    /**
+     * 批量删除
+     * @param ids
+     */
+    void deleteByIds(int [] ids);
 }

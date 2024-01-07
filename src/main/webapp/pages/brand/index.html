@@ -10,10 +10,19 @@
     head
     </div>
     <div class="main">
+        <div>
+            <el-button @click="deleteByIds" type="danger">批量删除</el-button>
+        </div>
         <el-table
                 :data="brandList"
                 stripe
+                @select="select"
+                @select-all="selectAll"
                 style="width: 100%">
+            <el-table-column
+                    type="selection"
+                    width="50">
+            </el-table-column>
             <el-table-column
                     type="index"
                     width="50">
@@ -50,7 +59,8 @@
         el: '#app',
         data() {
             return {
-                brandList: []
+                brandList: [],
+                selection: [] // 选择的品牌
             }
         },
         mounted() {
@@ -65,6 +75,34 @@
                     const {data} = res
                     this.brandList = data
                 })
+            },
+            // 通过ids 删除
+            deleteByIds() {
+                const ids = this.selection.map(item => item.id)
+                if (!ids || !ids.length) return this.$message.warning('ids不能为空')
+                this.$confirm('确认删除吗？')
+                    .then(_ => {
+                        const params = ids
+                        axios({
+                            method: 'delete',
+                            url: 'http://localhost:8080/servlet/brand/deleteByIds',
+                            data: params
+                        }).then(res => {
+                            this.$message.success('删除成功')
+                            // 删除列表
+                            this.getBrandList()
+                        }).catch(error => {
+                            this.$message.error("删除失败" + error)
+                        })
+                    })
+            },
+            select(selection, row) {
+                console.log('selection', selection, row)
+                this.selection = selection
+            },
+            selectAll(selection) {
+                console.log('select-all', selection)
+                this.selection = selection
             }
         }
     })

@@ -8,4 +8,11 @@
     <resultMap id="brandResultMap" type="com.java.pojo.Brand">
         <result property="brandName" column="brand_name"></result>
     </resultMap>
+
+    <delete id="deleteByIds">
+        delete from brand where id in
+        <foreach item="id" collection="ids" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>
